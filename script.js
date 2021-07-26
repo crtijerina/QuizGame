@@ -1,8 +1,12 @@
-var buttonAll = document.querySelector(".choices")
+// global variables
+
+var buttonAll = document.querySelector("#choices")
 var score = 0 
 var timerEl = document.getElementById('countdown');
 var mainEl = document.getElementById('mainQuestion');
 var startBtn = document.getElementById('start');
+var index = 0
+
 
 var questions = [
   {
@@ -47,33 +51,42 @@ var questions = [
 
 // }
 // console.log(questions[0].a)
-function populateQuestion(){
-for( let i=0; i<questions.length; i++){
-    var questionsDiv = document.createElement("div")
-    questionsDiv.appendChild(mainEl.textContent=questions[i].q)
-}
+// function populateQuestion(){
+// for( let i=0; i<questions.length; i++){
+//     var questionsDiv = document.createElement("div")
+//     questionsDiv.appendChild(mainEl.textContent=questions[i].q)
+// }    
+// } 
 
 
-    
-
-    
-} 
 
 // Displays the current count on the page
 function setCounterText() {
-  countEl.textContent = count;
+  //countEl.textContent = count;
 }
 
 // Increments the count on click and calls setCounterText()
-buttonAll.addEventListener('click', function() {
-  alert("big daddy")
-    score++;
-  setCounterText();
-});
+// buttonAll.addEventListener('click', function() {
+//   alert("big daddy")
+//     score++;
+//   setCounterText();
+// });
 
+function optionsList(){
+    var options = questions[index].c
+    var answer = questions[index].a
+for (let i=0; i < options.length; i++){
+   var optionButton = document.createElement("button")
+    document.body.append(optionButton)
+    optionButton.innerHTML=options[i]
+    optionButton.addEventListener("click", function (){console.log();}  )
+
+
+}
+}
 
 // Timer that counts down from 5
-
+optionsList()
 function countdown() {
     populateQuestion();
     var timeLeft = 60;
