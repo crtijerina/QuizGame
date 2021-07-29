@@ -8,6 +8,9 @@ var startBtn = document.getElementById("start");
 var optionContainer = document.getElementById("optionsContainer");
 var index = 0;
 var score = 0;
+var isPaused = false; 
+var timeLeft = 60;
+
 
 var questions = [
   {
@@ -47,29 +50,6 @@ var questions = [
   },
 ];
 
-// if (questions[0].a=== click 1){
-
-// }
-// console.log(questions[0].a)
-// function populateQuestion(){
-// for( let i=0; i<questions.length; i++){
-//     var questionsDiv = document.createElement("div")
-//     questionsDiv.appendChild(mainEl.textContent=questions[i].q)
-// }
-// }
-
-// Displays the current count on the page
-function setCounterText() {
-  //countEl.textContent = count;
-}
-
-// Increments the count on click and calls setCounterText()
-// buttonAll.addEventListener('click', function() {
-//   alert("big daddy")
-//     score++;
-//   setCounterText();
-// });
-
 function optionsList() {
   var options = questions[index].c;
   var answer = questions[index].a;
@@ -99,8 +79,11 @@ function questionsList() {
     mainEl.innerHTML = questions[index].q;
     optionsList();
   }
-  else { mainEl.innerHTML = `Force score is ${score-1}`;
-  timerEl.style.display= 'none'  }
+  else { mainEl.innerHTML = ` Force score is ${score-1}`;
+    isPaused= true 
+  scoreText.style.display = "none"
+}
+
 }
 
  
@@ -108,33 +91,21 @@ function questionsList() {
 // Timer that counts down from 5
 
 function countdown() {
-  var timeLeft = 60;
-
-  // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-  var timeInterval = setInterval(function () {
-    // As long as the `timeLeft` is greater than 1
-    if (timeLeft > 1) {
-      // Set the `textContent` of `timerEl` to show the remaining seconds
-      timerEl.textContent = timeLeft + " seconds remaining";
-      // Decrement `timeLeft` by 1
-      timeLeft--;
-    } else if (timeLeft === 1) {
-      // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-      timerEl.textContent = timeLeft + " second remaining";
-      timeLeft--;
-    }
-
-    
-    else {
-      // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-      timerEl.textContent = "May the froce be with you";
-      // Use `clearInterval()` to stop the timer
-      clearInterval(timeInterval);
-      // Call the `displayMessage()` function
-    
-    }
-
+var timeInterval = window.setInterval(function() {
+    if(!isPaused) {
+        timeLeft--;
+      timerEl.textContent="Seconds: " + timeLeft;
+    }else {
+        // Once `timeLeft` gets to 0, set `timerEl` to an empty string
+        timerEl.textContent = `Finished with ${timeLeft} seconds left. May the force be with you.` 
+        // Use `clearInterval()` to stop the timer
+        clearInterval(timeInterval);
+        // Call the `displayMessage()` function
+      
+      }
   }, 1000);
+    
+    
   questionsList()
   
 }
