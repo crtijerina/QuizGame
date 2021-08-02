@@ -12,6 +12,11 @@ var isPaused = false;
 var timeLeft = 60;
 
 
+function myFunction() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+}
+
 var questions = [
   {
     q: "In Star Wars, what do they call the invisible power that binds the galaxy together? ",
@@ -91,11 +96,16 @@ function questionsList() {
 // Timer that counts down from 5
 
 function countdown() {
-var timeInterval = window.setInterval(function() {
+  myFunction()
+  var timeInterval = window.setInterval(function() {
     if(!isPaused) {
         timeLeft--;
       timerEl.textContent="Seconds: " + timeLeft;
-    }else {
+    }else if (timeLeft === 0){
+      clearInterval(timeInterval);
+
+    }
+    else {
         // Once `timeLeft` gets to 0, set `timerEl` to an empty string
         timerEl.textContent = `Finished with ${timeLeft} seconds left. May the force be with you.` 
         // Use `clearInterval()` to stop the timer
@@ -110,7 +120,7 @@ var timeInterval = window.setInterval(function() {
   
 }
 startBtn.onclick = countdown;
-// startBtn.onclick = populateQuestion;
+
 score++;
 
 
