@@ -9,8 +9,23 @@ var optionContainer = document.getElementById("optionsContainer");
 var index = 0;
 var score = 0;
 var isPaused = false; 
-var timeLeft = 60;
+var timeL
+var nameInput = document.getElementById("name_input")
+var scoreInput = document.getElementById("score_input")
 
+function renderScore() {
+  var finalScore = localStorage.getItem('final_score')
+var Jedi = localStorage.getItem('Jedi_name')  
+if (finalScore === null || Jedi === null){
+  return 
+}  
+  
+nameInput.textContent = Jedi
+scoreInput.textContent = finalScore
+
+
+
+}
 
 function myFunction() {
   var element = document.body;
@@ -102,9 +117,8 @@ function countdown() {
         timeLeft--;
       timerEl.textContent="Seconds: " + timeLeft;
     }else if (timeLeft === 0){
-      clearInterval(timeInterval);
-
-    }
+        isPaused= true; 
+      }
     else {
         // Once `timeLeft` gets to 0, set `timerEl` to an empty string
         timerEl.textContent = `Finished with ${timeLeft} seconds left. May the force be with you.` 
@@ -120,6 +134,7 @@ function countdown() {
   
 }
 startBtn.onclick = countdown;
+
 
 score++;
 
