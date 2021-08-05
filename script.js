@@ -8,25 +8,81 @@ var startBtn = document.getElementById("start");
 var optionContainer = document.getElementById("optionsContainer");
 var index = 0;
 var score = 0;
-var isPaused = false; 
-var timeL
-var nameInput = document.getElementById("name_input")
-var scoreInput = document.getElementById("score_input")
+var isPaused = false;
+var timeLeft = 60;
+var nameInput = document.getElementById("name_input");
+var scoreInput = document.getElementById("score_input");
+var scores = [];
+var scoreList = document.getElementById("scoreList");
+var jediForm = document.getElementById("jediForm");
 
-function renderScore() {
-  var finalScore = localStorage.getItem('final_score')
-var Jedi = localStorage.getItem('Jedi_name')  
-if (finalScore === null || Jedi === null){
-  return 
-}  
-  
-nameInput.textContent = Jedi
-scoreInput.textContent = finalScore
+init();
 
+//score
+function renderScores() {
+  // Clear scoreList element and update scoreInput
+  // scoreList.innerHTML = "";
+  // scoreInput.textContent = scores.length;
 
+  // Render a new li for each score
+  for (var i = 0; i < scores.length; i++) {
+    var score = scores[i];
 
+    var tr = document.createElement("tr");
+    var td = document.createElement("td") 
+    tr.setAttribute("data-index", i);
+    scoreList.appendChild(tr)
+  }
 }
 
+function storedScores() {
+  // Stringify and sdet "Scores" key in localStorage to Scores array
+  localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+function init() {
+  // Get stored scores from localStorage
+  // Parsing the JSON string to an object
+  var storedScores = JSON.parse(localStorage.getItem("scores"));
+
+  // If scores were retrieved from localStorage, update the scores array to it
+  if (storedScores !== null) {
+    scores = storedScores;
+  }
+
+  // Render scores to the DOM
+  renderScores();
+}
+// When form is submitted...
+jediForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  var jediText = nameInput.value.trim();
+
+  // Return from function early if submitted jediText is blank
+  if (jediText === "") {
+    alert("Jedi name enter you must");
+    return;
+  }
+
+  localStorage.setItem("jediName", nameInput.value);
+  localStorage.setItem("score", score);
+  console.log(score);
+  let forceScore = {
+    jediName: jediText,
+    scoreNumber: score,
+  };
+
+  // Add new jediText to todos array, clear the input
+  scores.push(forceScore);
+  nameInput.value = "";
+
+  // // Store updated todos in localStorage, re-render the list
+  storedScores();
+  renderScores();
+});
+
+//dark mode function
 function myFunction() {
   var element = document.body;
   element.classList.toggle("dark-mode");
@@ -70,6 +126,7 @@ var questions = [
   },
 ];
 
+//question oppions
 function optionsList() {
   var options = questions[index].c;
   var answer = questions[index].a;
@@ -82,7 +139,7 @@ function optionsList() {
         alert("Correct");
         scoreText.innerHTML = `Score ${score++}`;
         index++;
-questionsList();
+        questionsList();
         while (optionContainer.hasChildNodes()) {
           optionContainer.removeChild(optionContainer.firstChild);
         }
@@ -98,44 +155,35 @@ function questionsList() {
   if (index <= questionList) {
     mainEl.innerHTML = questions[index].q;
     optionsList();
+  } else {
+    mainEl.innerHTML = ` Force score is ${score}`;
+    isPaused = true;
+    scoreText.style.display = "none";
   }
-  else { mainEl.innerHTML = ` Force score is ${score-1}`;
-    isPaused= true 
-  scoreText.style.display = "none"
 }
-
-}
-
- 
 
 // Timer that counts down from 5
 
 function countdown() {
-  myFunction()
-  var timeInterval = window.setInterval(function() {
-    if(!isPaused) {
-        timeLeft--;
-      timerEl.textContent="Seconds: " + timeLeft;
-    }else if (timeLeft === 0){
-        isPaused= true; 
-      }
-    else {
-        // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-        timerEl.textContent = `Finished with ${timeLeft} seconds left. May the force be with you.` 
-        // Use `clearInterval()` to stop the timer
-        clearInterval(timeInterval);
-        // Call the `displayMessage()` function
-      
-      }
+  myFunction();
+  var timeInterval = window.setInterval(function () {
+    if (!isPaused) {
+      timeLeft--;
+      timerEl.textContent = "Seconds: " + timeLeft;
+    } else if (timeLeft === 0) {
+      isPaused = true;
+    } else {
+      // Once `timeLeft` gets to 0, set `timerEl` to an empty string
+      timerEl.textContent = `Finished with ${timeLeft} seconds left. May the force be with you.`;
+      // Use `clearInterval()` to stop the timer
+      clearInterval(timeInterval);
+      // Call the `displayMessage()` function
+    }
   }, 1000);
-    
-    
-  questionsList()
-  
+
+  questionsList();
 }
-startBtn.onclick = countdown;
-
-
-score++;
-
-
+startBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  countdown();
+});
