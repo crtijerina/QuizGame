@@ -24,11 +24,23 @@
     <label for="jedi_title-text">Jedi Name</label>
     <input type="text" placeholder="your name what is?" name="jedi_title-text" id="name_input" />
   </form>
-<table id= "scoreList"  style = "width:100%">
+   <!-- toggle funtion -->
+<button onclick="toggle()">Leader Board</button>
+<table style = "width:100%; display:none" id = "leaderBoard">
+    <thead>
     <tr>
         <th>Jedi Title</th>
         <th>Force Score</th>
     </tr>
+</thead>
+<tbody id= "scoreList">
+
+   
+    
+
+
+
+</tbody>
 </table>
 <script src="script.js"></script>
 

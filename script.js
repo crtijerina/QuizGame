@@ -21,20 +21,35 @@ init();
 //score
 function renderScores() {
   // Clear scoreList element and update scoreInput
-  // scoreList.innerHTML = "";
+  scoreList.innerHTML = "";
   // scoreInput.textContent = scores.length;
 
   // Render a new li for each score
   for (var i = 0; i < scores.length; i++) {
-    var score = scores[i];
+    var scoreLi = scores[i];
 
     var tr = document.createElement("tr");
-    var td = document.createElement("td") 
-    tr.setAttribute("data-index", i);
+    var td_forceScore = document.createElement("td") 
+    var td_jediTitle = document.createElement("td") 
+    //tr.setAttribute("data-index", i);
     scoreList.appendChild(tr)
+    tr.appendChild(td_jediTitle) 
+    tr.appendChild(td_forceScore)
+    td_jediTitle.textContent=scoreLi.jediName 
+    td_forceScore.textContent= scoreLi.scoreNumber
+  
+  }
+  
+}
+//toggle funtion
+function toggle() {
+  var leaderBoard = document.getElementById("leaderBoard");
+  if (leaderBoard.style.display === "none") {
+    leaderBoard.style.display = "table";
+  } else {
+    leaderBoard.style.display = "none";
   }
 }
-
 function storedScores() {
   // Stringify and sdet "Scores" key in localStorage to Scores array
   localStorage.setItem("scores", JSON.stringify(scores));
@@ -83,7 +98,7 @@ jediForm.addEventListener("submit", function (event) {
 });
 
 //dark mode function
-function myFunction() {
+function darkMode() {
   var element = document.body;
   element.classList.toggle("dark-mode");
 }
@@ -165,7 +180,7 @@ function questionsList() {
 // Timer that counts down from 5
 
 function countdown() {
-  myFunction();
+  darkMode();
   var timeInterval = window.setInterval(function () {
     if (!isPaused) {
       timeLeft--;
