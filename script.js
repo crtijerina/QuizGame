@@ -29,17 +29,15 @@ function renderScores() {
     var scoreLi = scores[i];
 
     var tr = document.createElement("tr");
-    var td_forceScore = document.createElement("td") 
-    var td_jediTitle = document.createElement("td") 
+    var td_forceScore = document.createElement("td");
+    var td_jediTitle = document.createElement("td");
     //tr.setAttribute("data-index", i);
-    scoreList.appendChild(tr)
-    tr.appendChild(td_jediTitle) 
-    tr.appendChild(td_forceScore)
-    td_jediTitle.textContent=scoreLi.jediName 
-    td_forceScore.textContent= scoreLi.scoreNumber
-  
+    scoreList.appendChild(tr);
+    tr.appendChild(td_jediTitle);
+    tr.appendChild(td_forceScore);
+    td_jediTitle.textContent = scoreLi.jediName;
+    td_forceScore.textContent = scoreLi.scoreNumber;
   }
-  
 }
 //toggle funtion
 function toggle() {
@@ -95,6 +93,8 @@ jediForm.addEventListener("submit", function (event) {
   // // Store updated todos in localStorage, re-render the list
   storedScores();
   renderScores();
+  alert("score saved");
+  location.reload();
 });
 
 //dark mode function
@@ -161,6 +161,13 @@ function optionsList() {
 
         optionsList();
       } else alert("The Force was not with you");
+      index++;
+      questionsList();
+      while (optionContainer.hasChildNodes()) {
+        optionContainer.removeChild(optionContainer.firstChild);
+      }
+
+      optionsList();
     });
   }
 }
@@ -177,14 +184,22 @@ function questionsList() {
   }
 }
 
+function pauseTimer() {
+  if (timeLeft === 0) {
+    isPaused = true;
+  }
+}
+
 // Timer that counts down from 5
 
 function countdown() {
+  startBtn.style.display = "none";
   darkMode();
   var timeInterval = window.setInterval(function () {
     if (!isPaused) {
       timeLeft--;
       timerEl.textContent = "Seconds: " + timeLeft;
+      pauseTimer();
     } else if (timeLeft === 0) {
       isPaused = true;
     } else {
